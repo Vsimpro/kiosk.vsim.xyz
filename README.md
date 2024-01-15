@@ -4,6 +4,8 @@ Source for kiosk.vsim.xyz -- tooling for browser-based, Kiosk mode testing.
 ## Kiosk Tooling
 Kiosk tooling is a toolbox that includes tooling to help enumeration and breakout of Kiosk-esque environments. With only an access to a browser, the things you can do are limited. In order to move laterally and get more information about what type of machinery you're working on, one must be clever and use everything avialable.
 
+All of the tools run "client-side" meaning no data is sent to outside servers. (Exception being when you request the site, libraries etc might be fetched as per usual for websites). 
+
 ## Access:
 Tools are up and running on https://kiosk.vsim.xyz/
 
