@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport"  content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi">
+    <title> Kiosk Tooling </title>
+
+    <!-- Styling -->
+    <style>
+
+    * {
+        font-size: small;
+        font-family: monospace;
+    }
+    
+    :root {
+        --snow:       #fbfbfb;
+        --orange:     #F56E0F;
+        --dark-void:  #151419;
+        --gluon-grey: #1b1b1E;
+        --slate-grey: #262626;
+        --dusty-grey: #878787;
+    }
+    
+    body {
+        max-width: 380px;
+        margin: auto;
+        
+        color: var( --snow );
+        background-color: var( --dark-void );
+    }
+    
+    h1 {
+        color: var( --orange );
+        border-bottom: 1px dashed var( --snow );
+    }
+    
+    h2 {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    
+        padding-top: 50px;
+    
+        border-top: 1px dashed var( --dusty-grey );
+        border-bottom: 1px dashed var( --dusty-grey );
+    }
+    
+    h1, h2 {
+        font-size: 24px;
+    }
+    
+    p {
+        color: var( --dusty-grey );
+        font-size: 13px;
+    }
+    
+    textarea {
+        width: 95%;
+    }
+    
+    a {
+        font-weight: lighter;
+        font-size: large;
+
+        color: var( --snow );
+        text-decoration: none;
+    }
+
+    a:hover, a:active {
+        color: var( --orange );
+        text-decoration: underline;
+    }
+
+    .desc {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    
+    .brief {
+        color: var(--orange);
+    }
+    
+    #cpaste {
+        width: 96.5%;
+    }
+    
+    @media all and (orientation:landscape) {
+        html {
+            background-color: var( --dark-void );
+        }
+    
+        body {
+            padding: 5%;
+            padding-top: 1%;
+        
+            margin-top: 2%;
+            
+            background-color: var( --slate-grey );
+            box-shadow: 25px 20px 1px var( --gluon-grey );
+            
+            border-radius: 2px;
+            border: 1px solid white;
+        }
+    
+        h1 {
+            text-align: center;
+            text-shadow: 4px 4px 2px var( --dark-void );    
+    
+            padding: 0;
+        }
+    
+    }
+    </style>
+</head>
+<body>
+    <h1> Kiosk Tooling </h1>
+    <p> Tooling for lateral movement. 
+        
+        Example Tool: This file is meant to be used as a demonstration.
+    </p>
+
+    <!-- 
+    *   Example Tool:
+    *   a template / example on how to create tool pages.
+    *   each one should be linked to the index.html for ease of access.
+    *   for maintainability, mention your Handle
+    *   Written by: Vs1m.
+    -->
+    <div class="example">
+        <h2> Example Tool </h2> 
+        <p class="desc brief"> @brief </p>
+        <p class="desc"> - use this file as a template. </p>
+        <p></p>
+
+        <button id="example_button"> Click Me! </button>
+
+    </div>
+    
+    <script>
+        /* Written by: Vs1m
+         * Purpose: Examplify how to create 
+         *
+         */
+
+        var EXAMPLE_BTN = document.getElementById( "example_button" )
+        
+        EXAMPLE_BTN.addEventListener( "click", function() {
+            alert( "Woop!" )
+        });
+
+    </script>
+</body>
+</html>
