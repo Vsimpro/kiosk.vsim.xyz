@@ -173,6 +173,17 @@
         <p></p>
     </div>
 
+     <!-- User Agent -->
+     <div class="user_agent">
+        <h2> User Agent </h2>
+        <p class="desc brief"> @brief</p>
+        <p class="desc"> - below is the browser's user agent </p>
+        <p></p>
+
+        <p id="user_agent_result"> ... </p>
+        <p></p>
+    </div>
+
     <!-- WS Lateral scan,  -->
     <!-- TODO: To be made  -->
 
@@ -244,6 +255,9 @@
                 }
             }
         }
+        
+        // user agent
+        document.getElementById( "user_agent_result" ).innerHTML = navigator.userAgent;
         
     </script>
 </body>
