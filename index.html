@@ -173,23 +173,6 @@
         <p></p>
     </div>
 
-    <!-- Public Network Info -->
-    <div class="public_network_info">
-        <h2> Network Info </h2>
-        <p class="desc brief"> @brief</p>
-        <p class="desc"> - use this to get the information about the user network. </p>
-        <p class="desc"> - this will make a request to ipapi.co. </p>
-        <p></p>
-
-        <div id="public_network_info_result_container" style="display:none">
-            <p class="desc" id="public_network_info_result"></p>
-            <p></p>
-        </div>
-        
-        <button id="public_network_info_button" onClick="fetchPublicNetworkInfo()"> fetch </button>
-        <p></p>
-    </div>
-
     <!-- WS Lateral scan,  -->
     <!-- TODO: To be made  -->
 
@@ -203,8 +186,7 @@
         <p class="desc"> - below are links to other tools: </p>
         <p></p>
 
-        <!-- TODO: After first Merge, remove this. -->
-        <a href="/example.html"> /example.html </a>
+        <a href="/network_info.html"> /network_info.html </a>
     </div>
     <p></p>
 
@@ -263,30 +245,6 @@
             }
         }
         
-        function fetchPublicNetworkInfo(){
-            document.getElementById("public_network_info_result_container").style.display = "hidden";
-            const button = document.getElementById("public_network_info_button");
-            button.disabled = true;
-            button.innerText = " loading... ";
-
-            fetch('https://ipapi.co/json')
-                .then(response => response.json())
-                .then(data => {
-                    const formattedJson = JSON.stringify(data, null, 2);
-                    document.getElementById("public_network_info_result_container").style.display = "block";
-                    document.getElementById('public_network_info_result').innerText = formattedJson;
-
-                    button.disabled = false; 
-                    button.innerText = "fetch";
-                })
-                .catch(error => {
-                    document.getElementById("public_network_info_result_container").style.display = "block";
-                    document.getElementById('public_network_info_result').innerText = `Error: ${error.message}`;
-
-                    button.disabled = false;
-                    button.innerText = "fetch";
-                });
-        }
     </script>
 </body>
 </html>
