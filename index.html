@@ -253,12 +253,10 @@
             .then(devices => {
                 const mediaDevicesDiv = document.getElementById('mediaDevices');
 
-                // Clear the div before adding new elements
                 mediaDevicesDiv.innerHTML = '';
 
                 if (devices.length > 0) {
                     devices.forEach(device => {
-                        // Create a new paragraph for each device
                         const p = document.createElement('p');
                         p.textContent = `${device.kind}: ${device.label}, ID: ${device.deviceId}`;
                         mediaDevicesDiv.appendChild(p);
