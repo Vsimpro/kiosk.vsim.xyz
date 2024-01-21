@@ -11,7 +11,7 @@
         font-size: small;
         font-family: monospace;
     }
-    
+
     :root {
         --snow:       #fbfbfb;
         --orange:     #F56E0F;
@@ -20,43 +20,43 @@
         --slate-grey: #262626;
         --dusty-grey: #878787;
     }
-    
+
     body {
         max-width: 380px;
         margin: auto;
-        
+
         color: var( --snow );
         background-color: var( --dark-void );
     }
-    
+
     h1 {
         color: var( --orange );
         border-bottom: 1px dashed var( --snow );
     }
-    
+
     h2 {
         margin-top: 10px;
         margin-bottom: 5px;
-    
+
         padding-top: 50px;
-    
+
         border-top: 1px dashed var( --dusty-grey );
         border-bottom: 1px dashed var( --dusty-grey );
     }
-    
+
     h1, h2 {
         font-size: 24px;
     }
-    
+
     p {
         color: var( --dusty-grey );
         font-size: 13px;
     }
-    
+
     textarea {
         width: 95%;
     }
-    
+
     a {
         font-weight: lighter;
         font-size: large;
@@ -74,52 +74,52 @@
         margin-top: 0px;
         margin-bottom: 0px;
     }
-    
+
     .brief {
         color: var(--orange);
     }
-    
+
     #cpaste {
         width: 96.5%;
     }
-    
+
     @media all and (orientation:landscape) {
         html {
             background-color: var( --dark-void );
         }
-    
+
         body {
             padding: 5%;
             padding-top: 1%;
-        
+
             margin-top: 2%;
-            
+
             background-color: var( --slate-grey );
             box-shadow: 25px 20px 1px var( --gluon-grey );
-            
+
             border-radius: 2px;
             border: 1px solid white;
         }
-    
+
         h1 {
             text-align: center;
-            text-shadow: 4px 4px 2px var( --dark-void );    
-    
+            text-shadow: 4px 4px 2px var( --dark-void );
+
             padding: 0;
         }
-    
+
     }
     </style>
 </head>
 <body>
     <h1> Kiosk Tooling </h1>
-    <p> Tooling for lateral movement. 
+    <p> Tooling for lateral movement.
         Of use if you pop a browser on a machine that's on Kiosk mode.
     </p>
 
     <!-- Copy & Paste -->
     <div class="copy" id="copy">
-        <h2> Copy & Paste </h2> 
+        <h2> Copy & Paste </h2>
         <p class="desc brief"> @brief </p>
         <p class="desc"> - use this to write down and copy text. </p>
         <p></p>
@@ -139,10 +139,10 @@
         <p class="desc"> - can be used to reveal webpages lateral on the network, </p>
         <p></p>
 
-        <label for="redirect"> 
-            link: 
+        <label for="redirect">
+            link:
         </label>
-        <input name="redirect_to" id="redirect" type="url" /> 
+        <input name="redirect_to" id="redirect" type="url" />
         <button type="submit" id="redirect_button"> redirect </button>
         <p class="desc"> e.g "http://192.168.1.1/" -> router panel.</p>
     </div>
@@ -154,7 +154,7 @@
         <p class="desc brief"> @brief</p>
         <p class="desc"> - use this to access & browse internal files & directories. </p>
         <p></p>
-        
+
         <form action="/api" method="post" enctype="multipart/form-data">
             <input id="file" name="file" type="file" />
         </form>
@@ -178,7 +178,7 @@
     *  get the user agent of the browser.
     *  Written by: @3sier.
     -->
-    
+
      <div class="user_agent">
         <h2> User Agent </h2>
         <p class="desc brief"> @brief</p>
@@ -187,6 +187,20 @@
 
         <p id="user_agent_result"> ... </p>
         <p></p>
+    </div>
+
+
+     <!--
+    *  Devices:
+    *  enumerates accessible devices from the browser (microphones, etc).
+    *  author: https://djnn.sh
+    -->
+    <div>
+        <h2>Devices</h2>
+        <p class="desc brief">@brief</p>
+        <p class="desc"> - here are the devices the browser is allowed to reach: </p>
+        <div id="mediaDevices"></div>
+
     </div>
 
     <!-- WS Lateral scan,  -->
@@ -209,61 +223,86 @@
     <script>
         // Global Variables
         var COPY           = document.getElementById( "copy_paste" )
-        var COPY_BUTTON    = document.getElementById( "cpaste" ) 
-        
+        var COPY_BUTTON    = document.getElementById( "cpaste" )
+
         var REDIRECTOR     = document.getElementById( "redirect" )
         var REDIRECTOR_BTN = document.getElementById( "redirect_button" )
-        
+
         var CALCULATOR     = document.getElementById( "calculator" )
         var CALCULATOR_BTN = document.getElementById( "calculator_button" )
-        
+
         // Listeners
         COPY_BUTTON.addEventListener( "click", function() {
             copyToClipboard( COPY.value )
         });
-        
+
         REDIRECTOR_BTN.addEventListener( "click", function(){
             window.location = REDIRECTOR.value;
         });
-        
+
         CALCULATOR_BTN.addEventListener( "click", function(){
             window.location = CALCULATOR.value;
         });
-        
-        
+
+
+        /* enumerates media devices (camera, microphone, etc) */
+        document.getElementById('mediaDevices').innerText = 'Requesting permission...';
+
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            .then(() => {
+                return navigator.mediaDevices.enumerateDevices();
+            })
+            .then(devices => {
+                if (devices.length > 0) {
+                    let deviceList = '';
+                    devices.forEach(device => {
+                        deviceList += `${device.kind}: ${device.label}, ID: ${device.deviceId}\n`;
+                    });
+                    document.getElementById('mediaDevices').innerText = deviceList;
+                } else {
+                    document.getElementById('mediaDevices').style.color = 'red';
+                    document.getElementById('mediaDevices').innerText = 'No media devices found.';
+                }
+            })
+            .catch(err => {
+                document.getElementById('mediaDevices').style.color = 'red';
+                document.getElementById('mediaDevices').innerText = `An error occurred: ${err.message}`;
+            });
+
+
         // Helper functions
         function copyToClipboard(text) {
             // Source: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
             if ( window.clipboardData && window.clipboardData.setData ) {
                 return window.clipboardData.setData("Text", text);
             }
-        
+
             if ( document.queryCommandSupported && document.queryCommandSupported("copy") ) {
                 let textarea = document.createElement("textarea");
-                
+
                 textarea.textContent    = text;
-                textarea.style.position = "fixed";  
-                
+                textarea.style.position = "fixed";
+
                 document.body.appendChild(textarea);
                 textarea.select();
                 try {
-                    return document.execCommand("copy");  
+                    return document.execCommand("copy");
                 }
 
                 catch (ex) {
                     alert("Could not Copy to clipboard..", ex);
                     return prompt("Copy to clipboard: Ctrl+C, Enter", text);
                 }
-                
+
                 finally {
                     document.body.removeChild(textarea);
                 }
             }
         }
-        
+
         // user agent
         document.getElementById( "user_agent_result" ).innerHTML = navigator.userAgent;
-        
+
     </script>
 </body>
 </html>
