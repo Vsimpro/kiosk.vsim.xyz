@@ -244,29 +244,34 @@
             window.location = CALCULATOR.value;
         });
 
-
         /* enumerates media devices (camera, microphone, etc) */
         document.getElementById('mediaDevices').innerText = 'Requesting permission...';
-
         navigator.mediaDevices.getUserMedia({ audio: true, video: true })
             .then(() => {
                 return navigator.mediaDevices.enumerateDevices();
             })
             .then(devices => {
+                const mediaDevicesDiv = document.getElementById('mediaDevices');
+
+                // Clear the div before adding new elements
+                mediaDevicesDiv.innerHTML = '';
+
                 if (devices.length > 0) {
-                    let deviceList = '';
                     devices.forEach(device => {
-                        deviceList += `${device.kind}: ${device.label}, ID: ${device.deviceId}\n`;
+                        // Create a new paragraph for each device
+                        const p = document.createElement('p');
+                        p.textContent = `${device.kind}: ${device.label}, ID: ${device.deviceId}`;
+                        mediaDevicesDiv.appendChild(p);
                     });
-                    document.getElementById('mediaDevices').innerText = deviceList;
                 } else {
-                    document.getElementById('mediaDevices').style.color = 'red';
-                    document.getElementById('mediaDevices').innerText = 'No media devices found.';
+                    mediaDevicesDiv.style.color = 'red';
+                    mediaDevicesDiv.innerText = 'No media devices found.';
                 }
             })
             .catch(err => {
-                document.getElementById('mediaDevices').style.color = 'red';
-                document.getElementById('mediaDevices').innerText = `An error occurred: ${err.message}`;
+                const mediaDevicesDiv = document.getElementById('mediaDevices');
+                mediaDevicesDiv.style.color = 'red';
+                mediaDevicesDiv.innerText = `An error occurred: ${err.message}`;
             });
 
 
