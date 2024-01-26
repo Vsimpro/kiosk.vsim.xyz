@@ -189,20 +189,6 @@
         <p></p>
     </div>
 
-
-     <!--
-    *  Devices:
-    *  enumerates accessible devices from the browser (microphones, etc).
-    *  author: https://djnn.sh
-    -->
-    <div>
-        <h2>Devices</h2>
-        <p class="desc brief">@brief</p>
-        <p class="desc"> - here are the devices the browser is allowed to reach: </p>
-        <div id="mediaDevices"></div>
-
-    </div>
-
     <!-- WS Lateral scan,  -->
     <!-- TODO: To be made  -->
 
@@ -244,34 +230,6 @@
             window.location = CALCULATOR.value;
         });
 
-        /* enumerates media devices (camera, microphone, etc) */
-        document.getElementById('mediaDevices').innerText = 'Requesting permission...';
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-            .then(() => {
-                return navigator.mediaDevices.enumerateDevices();
-            })
-            .then(devices => {
-                const mediaDevicesDiv = document.getElementById('mediaDevices');
-
-                mediaDevicesDiv.innerHTML = '';
-
-                if (devices.length > 0) {
-                    devices.forEach(device => {
-                        const p = document.createElement('p');
-                        p.textContent = `${device.kind}: ${device.label}, ID: ${device.deviceId}`;
-                        mediaDevicesDiv.appendChild(p);
-                    });
-                } else {
-                    mediaDevicesDiv.style.color = 'red';
-                    mediaDevicesDiv.innerText = 'No media devices found.';
-                }
-            })
-            .catch(err => {
-                const mediaDevicesDiv = document.getElementById('mediaDevices');
-                mediaDevicesDiv.style.color = 'red';
-                mediaDevicesDiv.innerText = `An error occurred: ${err.message}`;
-            });
-
 
         // Helper functions
         function copyToClipboard(text) {
@@ -303,7 +261,9 @@
             }
         }
 
-        // user agent
+        /* User-Agent Info:
+         * Written by: @3sier.
+         */
         document.getElementById( "user_agent_result" ).innerHTML = navigator.userAgent;
 
     </script>
