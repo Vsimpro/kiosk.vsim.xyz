@@ -270,7 +270,8 @@ async function measure_control() {
 
 async function scan_host() {
     var host = test_address.value;
-    var ports = [ 80 ]
+    var ports = [ 80 ];
+    var counter = 0;
     
     if ( ports_range.value == "nmap" ) {
         ports = NMAP_TOP_1000;
@@ -288,30 +289,37 @@ async function scan_host() {
     refresh_to_cancel.hidden = false;
     address_scan_button.hidden = true;
 
-    for (let i = 0; i < ports.length; i++) {
-        let _temp_port = new Port( host, ports[ i ], PROTOCOL ) 
-        let _latency   = await scan_port_object( _temp_port );
+    // Create an array with Promises for each port
+    const promises = ports.map(async port => {
+        let _temp_port = new Port(host, port, PROTOCOL)
+        let _latency = await scan_port_object(_temp_port);
 
-        _currently.innerText = `${i}/${ports.length}`;
+        counter++;
+        _currently.innerText = `${counter}/${ports.length}`;
 
         // Unsafe port
-        if ( _latency <= 2 ) {
-            _temp_port.state = 2
-            continue;
+        if (_latency <= 2) {
+            _temp_port.state = 2;
+        return _temp_port;
         }
 
         // Port Open
-        if (( CLOSED_LATENCY / _latency ) > 1.3) {
-            _temp_port.state = 1
-            create_card( host, ports[ i ], i )
-            
-            //console.log( "" + ports[ i ] + " is likely open .." )
-            continue;
+        if ((CLOSED_LATENCY / _latency) > 1.3) {
+            _temp_port.state = 1;                
+        return _temp_port;
         }
 
         // Port is closed.
-        _temp_port.state = 0
-    }
+        _temp_port.state = 0;
+        return _temp_port;
+    });
+
+    // Use Promise.all to scan the ports simultaneously
+    const results = await Promise.all(promises);
+
+    // Filter out unsafe or closed ports and process the open ones
+    const validPorts = results.filter(port => port.state == 1);
+    validPorts.forEach(port => create_card(host, port));
 
     currently.hidden = true;
     _currently.hidden = true;
@@ -351,14 +359,14 @@ function average_of( array ) {
 //
 // Create Port cards
 //
-function create_card( address, port, state ) {
+function create_card( address, port ) {
     var _link = document.createElement( "a" )
         _link.target = "_blank"    
-        _link.href = `http://${ address }:${ port }/` 
-        _link.innerText = `http://${ address }:${ port }/` 
+        _link.href = `http://${ address }:${ port.port }/` 
+        _link.innerText = `http://${ address }:${ port.port }/` 
     
      var _description = document.createElement( "p" )
-        _description.innerText = `Port ${ port } is possibly open: `
+        _description.innerText = `Port ${ port.port } is possibly open: `
         _description.appendChild( _link )
 
     ports.appendChild( document.createElement( "p" ) )
