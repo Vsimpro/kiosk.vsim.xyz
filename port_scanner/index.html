@@ -142,6 +142,7 @@
             <p></p>           
 
             <div class="control" id="control">    
+                <input name="address" id="control_address" placeholder="192.168.1.1" value="192.168.1.1">
                 <button onClick="measure_control()"> measure control </button>
                 <p class="desc" id="measure_wait" hidden> .. please wait .. </p>
                 <p class="desc" id="measure_done" hidden> done! </p>
@@ -231,7 +232,8 @@ var measure_done  = document.getElementById( "measure_done" );
 var test_address  = document.getElementById( "test_address" );
 var default_range = document.getElementById( "default_range" );
 var scanning_done = document.getElementById( "scanning_done" );
-var scan_button   = document.getElementById( "address_scan_button" );
+var control_address = document.getElementById( "control_address" );
+var scan_button     = document.getElementById( "address_scan_button" );
 var refresh_to_cancel = document.getElementById( "refresh_to_cancel" );
 
 
@@ -250,7 +252,7 @@ async function measure_control() {
 
     /* Begin Measurement */
     for (let i = 0; i < N; i++) {
-        let   _temp_port = new Port( "127.0.0.1", "60666", PROTOCOL ) 
+        let   _temp_port = new Port( control_address.value, "60666", PROTOCOL ) 
         await _temp_port.scan_port();
         
         control_measurements.push( _temp_port.latency );
