@@ -138,6 +138,7 @@
             <p class="desc brief">@brief</p>
             <p class="desc">- measure the latency to a (hopefully) closed port.</p>
             <p class="desc">- select a host to scan ports on!</p>
+            <p class="desc">- if the ports don't look correct, consider re-running the scan. </p>
             <p></p>           
 
             <div class="control" id="control">    
@@ -158,7 +159,7 @@
                 </p>
 
                 <p class="desc">provide address: </p>
-                <input name="address" id="test_address" placeholder="192.168.0.92" value="192.168.0.92">
+                <input name="address" id="test_address" placeholder="192.168.1.1" value="192.168.1.1">
                 
                 <button onClick="scan_host()" id="address_scan_button"> scan address </button>
                 <p class="desc" id="currently" hidden>
@@ -185,7 +186,7 @@
             <p></p>  
 
             <p class="desc">provide subnet / address: </p>
-            <input id="subnet_address" name="subnet" placeholder="192.168.1.1" value="192.168.0.1">
+            <input id="subnet_address" name="subnet" placeholder="192.168.1.1" value="192.168.1.1">
             <p></p>
 
             <button onClick="scan_range()"> scan network </button>
